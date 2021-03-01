@@ -20,15 +20,6 @@ connection.connect(err => {
   prompts();
 });
 
-afterConnection = () => {
-  connection.query('SELECT * FROM department', function(err, res) {
-    if (err) throw err;
-    console.log(res);
-    connection.end();
-  });
-};
-
-
 function prompts() {
     inquirer
         .prompt({
@@ -59,7 +50,7 @@ function prompts() {
                     case 'Add an employee':
                         addEmployee();
                         break;
-                    case 'Add a department':
+                    case 'Add an department':
                         addDepartment();
                         break;
                     case 'Add a role':
@@ -112,7 +103,8 @@ function viewRoles() {
 // view all employees in the database
 function viewEmployees() {
     var query = 'SELECT * from employee';
-    connection.promise().query(query)
+    var query2 = 'SELECT e.id, e.first_name, e.last_name, role.title, department.name AS department, role.salary, concat(m.first_name, m.last_name) AS manager FROM employee e LEFT JOIN employee m ON e.manager_id = m.id INNER JOIN role ON e.role_id = role.id INNER JOIN department ON role.department_id = department.id ORDER BY ID ASC';
+    connection.promise().query(query2)
     .then( ([rows,fields]) => {
         console.log('**************************************');
       console.log(rows.length + ' Employees found!');
@@ -172,7 +164,7 @@ function addEmployee() {
                         last_name: answer.last_name,
                         manager_id: answer.manager_id,
                         role_id: roleId,
-                    },)
+                    })
                     .then(() => {
                         console.log('**************************************');
                     console.table('Employee has been added! View all employees to confirm!');
@@ -194,12 +186,12 @@ function addRole() {
             {
                 name: 'new_role',
                 type: 'input', 
-                message: "What new role would you like to add?"
+                message: "Enter the name of the role: "
             },
             {
                 name: 'salary',
                 type: 'input',
-                message: 'What is the salary of this role? (Enter a number)'
+                message: 'Enter the salary of this role? (Enter a number)'
             },
             {
                 name: 'Department',
@@ -236,6 +228,31 @@ function addRole() {
                 })
         })
     })
+};
+
+// add a department to the database
+function addDepartment() {
+    inquirer
+        .prompt([
+            {
+                name: 'deptName', 
+                type: 'input', 
+                message: 'Enter department name you would you like to add?'
+            }
+            ]).then(function (answer) {
+                connection.query(
+                    'INSERT INTO department SET ?',
+                    {
+                        name: answer.deptName
+                    });
+                var query = 'SELECT * FROM department';
+                connection.query(query, function(err, res) {
+                if(err)throw err;
+                console.log('***********    New department has been added!   ***************');
+                console.table('All Departments:', res);
+                prompts();
+                })
+            })
 };
 
 // exit the app
