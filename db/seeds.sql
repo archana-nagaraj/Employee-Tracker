@@ -6,26 +6,23 @@ VALUES
 ('HR'),
 ('Admin');
 
+
 INSERT INTO role (title, salary, department_id)
 VALUES 
 ('R&D Engineer', 300000, 1),  
-('Engineering Manager', 1500000, 2), 
+('Software Engineer', 150000, 2), 
 ('Clinical Expert', 125000, 3), 
 ('HR Manager', 125000, 4), 
-('Recruitment Specialist', 250000, 4),
-('Relationship Manager', 190000, 4),
-('Accountant', 125000, 5), 
 ('Frontdesk executive', 800000, 5);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id) 
-VALUES ('John', 'Mckinley', 1, 10), 
-('Smith', 'Bernard-Hall', 1, 20), 
-('Allen', 'Twain', 1 ,30), 
-('Chris', 'Ireland', 2, 40), 
-('Johny', 'Lever', 2, 50);
+VALUES 
+('John', 'Mckinley', 1, 3), 
+('Smith', 'Bernard-Hall', 2, 3), 
+('Allen', 'Twain', 3 ,4), 
+('Chris', 'Ireland', 4, null), 
+('Johny', 'Lever', 5, 4);
 
 
 
-SELECT employee.id, first_name, last_name, role.title, department.name FROM employee 
-LEFT JOIN role ON role.id = employee.manager_id 
-INNER JOIN department ON department.id = role.department_id
+
