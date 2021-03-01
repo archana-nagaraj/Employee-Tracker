@@ -33,22 +33,18 @@ function prompts() {
                     'Add an department',
                     'Add a role',
                     'Add an employee',
-                    'Update an employee',
                     'EXIT'
                     ]
             }).then(function (answer) {
                 switch (answer.action) {
-                    case 'View all employees':
-                        viewEmployees();
-                        break;
                     case 'View all departments':
                         viewDepartments();
                         break;
                     case 'View all roles':
                         viewRoles();
                         break;
-                    case 'Add an employee':
-                        addEmployee();
+                    case 'View all employees':
+                        viewEmployees();
                         break;
                     case 'Add an department':
                         addDepartment();
@@ -56,11 +52,8 @@ function prompts() {
                     case 'Add a role':
                         addRole();
                         break;
-                    case 'Update employee role':
-                        updateRole();
-                        break;
-                    case 'Delete an employee':
-                        deleteEmployee();
+                    case 'Add an employee':
+                        addEmployee();
                         break;
                     case 'EXIT': 
                         exit();
@@ -176,7 +169,7 @@ function addEmployee() {
                 })
         })
 };
-// add a role to the database
+// add a new role to the database
 function addRole() {
     var query = 'SELECT * FROM department';
     connection.promise().query(query)
@@ -230,7 +223,7 @@ function addRole() {
     })
 };
 
-// add a department to the database
+// add a new department to the database
 function addDepartment() {
     inquirer
         .prompt([
@@ -254,6 +247,9 @@ function addDepartment() {
                 })
             })
 };
+
+// Update employee role
+
 
 // exit the app
 function exit() {
